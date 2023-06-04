@@ -4,7 +4,10 @@
   "description": "A Lighthouse CI server deployed on AWS Lambda and EFS.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "cdk:bootstrap": "cdk bootstrap --verbose --require-approval never",
+    "cdk:deploy": "cdk deploy --verbose --require-approval never",
+    "cdk:destroy": "cdk destroy --force --verbose"
   },
   "repository": {
     "type": "git",
