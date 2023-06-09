@@ -1,0 +1,28 @@
+name: Teardown CDK stack
+
+on:
+  workflow_dispatch
+
+jobs:
+  teardown:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18]
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-1
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: teardown next app
+        run: |
+          npm install
+          npm run cdk:destroy

@@ -2,8 +2,7 @@ import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
 import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
 import { SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
 import { FileSystem } from "aws-cdk-lib/aws-efs";
-import { Architecture, Runtime, FileSystem as LambdaFileSystem, DockerImageFunction, DockerImageCode } from "aws-cdk-lib/aws-lambda";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { DockerImageCode, DockerImageFunction, FileSystem as LambdaFileSystem } from "aws-cdk-lib/aws-lambda";
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import path from "path";
 
