@@ -2,8 +2,9 @@ import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
 import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
 import { SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
 import { FileSystem } from "aws-cdk-lib/aws-efs";
-import { Architecture, Runtime, FileSystem as LambdaFileSystem } from "aws-cdk-lib/aws-lambda";
+import { Architecture, Runtime, FileSystem as LambdaFileSystem, DockerImageFunction, DockerImageCode } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import path from "path";
 
 class MainStack extends Stack {
@@ -44,16 +45,15 @@ class MainStack extends Stack {
       }
     });
 
-    const defaultLambdaFn = new NodejsFunction(this, "default-lambda", {
-      architecture: Architecture.X86_64,
-      entry: path.join(__dirname, "../dist/index.js"),
+    const defaultLambdaFn = new DockerImageFunction(this, "lambda", {
+      allowAllOutbound: true,
+      code: DockerImageCode.fromImageAsset(path.join(__dirname, "..")),
       filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mtn/lhci"),
-      handler: "main",
+      logRetention: RetentionDays.ONE_DAY,
       memorySize: 256,
-      runtime: Runtime.NODEJS_18_X,
-      timeout: Duration.seconds(30),
+      timeout: Duration.seconds(15),
       vpc,
-      vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED }
+      vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
     });
 
     const api = new LambdaRestApi(this, "api", {
