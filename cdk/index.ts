@@ -38,7 +38,7 @@ class MainStack extends Stack {
         ownerUid: '1001',
         permissions: '750'
       },
-      path: '/lambda',
+      path: '/',
       posixUser: {
         gid: '1001',
         uid: '1001'
@@ -48,7 +48,7 @@ class MainStack extends Stack {
     const defaultLambdaFn = new DockerImageFunction(this, "lambda", {
       allowAllOutbound: true,
       code: DockerImageCode.fromImageAsset(path.join(__dirname, "..")),
-      filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mtn/lhci"),
+      filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mnt/lhci"),
       logRetention: RetentionDays.ONE_DAY,
       memorySize: 256,
       timeout: Duration.seconds(15),
