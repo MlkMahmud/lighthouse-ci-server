@@ -8,11 +8,11 @@ let handler: Handler;
 export async function main(event: APIGatewayProxyEvent, context: Context) {
   try {
     if (!handler) {
-      const { app } = createApp({
+      const { app } = await createApp({
         storage: {
           storageMethod: 'sql',
           sqlDialect: 'sqlite',
-          sqlDatabasePath: '/mtn/lhci/db.sql',
+          sqlDatabasePath: '/mnt/lhci/db.sql',
         },
       });
       handler = serverless(app, { binary: ["image/*", "font/*"] });
