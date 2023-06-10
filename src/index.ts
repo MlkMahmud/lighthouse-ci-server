@@ -8,6 +8,8 @@ let handler: Handler;
 
 export async function main(event: APIGatewayProxyEvent, context: Context) {
   try {
+    const dirs = fs.readdirSync("/");
+    console.log(dirs);
     fs.access("/mnt/lhci/", fs.constants.W_OK | fs.constants.R_OK | fs.constants.F_OK, (err) => {
       if (err) {
         console.error(err);

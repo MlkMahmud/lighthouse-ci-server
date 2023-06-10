@@ -48,7 +48,7 @@ class MainStack extends Stack {
     const defaultLambdaFn = new DockerImageFunction(this, "lambda", {
       allowAllOutbound: true,
       code: DockerImageCode.fromImageAsset(path.join(__dirname, "..")),
-      filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mnt/lhci/"),
+      filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mnt/lhci"),
       logRetention: RetentionDays.ONE_DAY,
       memorySize: 256,
       timeout: Duration.seconds(15),
