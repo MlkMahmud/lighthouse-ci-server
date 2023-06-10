@@ -34,21 +34,21 @@ class MainStack extends Stack {
 
     const accessPoint = fileSystem.addAccessPoint("file-system-access-point", {
       createAcl: {
-        ownerGid: '1001',
-        ownerUid: '1001',
-        permissions: '750'
+        ownerGid: '1000',
+        ownerUid: '1000',
+        permissions: '0777'
       },
       path: '/',
       posixUser: {
-        gid: '1001',
-        uid: '1001'
-      }
+        gid: '1000',
+        uid: '1000'
+      },
     });
 
     const defaultLambdaFn = new DockerImageFunction(this, "lambda", {
       allowAllOutbound: true,
       code: DockerImageCode.fromImageAsset(path.join(__dirname, "..")),
-      filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mnt/lhci"),
+      filesystem: LambdaFileSystem.fromEfsAccessPoint(accessPoint, "/mnt/lhci/"),
       logRetention: RetentionDays.ONE_DAY,
       memorySize: 256,
       timeout: Duration.seconds(15),

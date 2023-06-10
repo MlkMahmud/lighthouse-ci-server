@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, Context } from "aws-lambda";
 import serverless, { Handler } from "serverless-http";
+import fs from "fs";
 // @ts-ignore
 import { createApp } from "@lhci/server";
 
@@ -7,6 +8,14 @@ let handler: Handler;
 
 export async function main(event: APIGatewayProxyEvent, context: Context) {
   try {
+    fs.access("/mnt/lhci/", fs.constants.W_OK | fs.constants.R_OK | fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(err);
+        console.error("NO ACCESS!");
+      } else {
+        console.log("ACCESS OK!!");
+      }
+    })
     if (!handler) {
       const { app } = await createApp({
         storage: {
