@@ -1,6 +1,6 @@
 import { HttpApi } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
-import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
+import { App, CfnOutput, Duration, RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
 import { SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
 import { FileSystem } from "aws-cdk-lib/aws-efs";
 import { DockerImageCode, DockerImageFunction, FileSystem as LambdaFileSystem } from "aws-cdk-lib/aws-lambda";
@@ -29,7 +29,8 @@ class MainStack extends Stack {
     const fileSystem = new FileSystem(this, "file-system", {
       encrypted: true,
       vpc,
-      vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED }
+      vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const accessPoint = fileSystem.addAccessPoint("file-system-access-point", {
@@ -38,10 +39,10 @@ class MainStack extends Stack {
         ownerUid: '1000',
         permissions: '0777'
       },
-      path: '/',
+      path: '/efs',
       posixUser: {
         gid: '1000',
-        uid: '1000'
+        uid: '1000',
       },
     });
 
@@ -55,6 +56,7 @@ class MainStack extends Stack {
       vpc,
       vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
     });
+
 
     const api = new HttpApi(this, "api", {
       defaultIntegration: new HttpLambdaIntegration("default-lambda-integration", defaultLambdaFn),
