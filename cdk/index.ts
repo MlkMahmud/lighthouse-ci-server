@@ -1,5 +1,6 @@
+import { HttpApi } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
-import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
 import { SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
 import { FileSystem } from "aws-cdk-lib/aws-efs";
 import { DockerImageCode, DockerImageFunction, FileSystem as LambdaFileSystem } from "aws-cdk-lib/aws-lambda";
@@ -55,9 +56,8 @@ class MainStack extends Stack {
       vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
     });
 
-    const api = new LambdaRestApi(this, "api", {
-      handler: defaultLambdaFn,
-      proxy: true,
+    const api = new HttpApi(this, "api", {
+      defaultIntegration: new HttpLambdaIntegration("default-lambda-integration", defaultLambdaFn),
     });
 
     new CfnOutput(this, 'API Gateway URL', {

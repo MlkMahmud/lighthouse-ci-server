@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/MlkMahmud/lighthouse-ci-server#readme",
   "devDependencies": {
+    "@aws-cdk/aws-apigatewayv2-alpha": "^2.83.1-alpha.0",
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.83.1-alpha.0",
     "@types/aws-lambda": "^8.10.115",
     "@types/node": "^20.2.5",
     "aws-cdk": "^2.82.0",
